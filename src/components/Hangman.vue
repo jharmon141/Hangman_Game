@@ -29,7 +29,7 @@
       <h3>{{ props.word.toUpperCase() }}</h3>
     </div>
     <div v-else-if="gameWon" class="won-game">
-      Congrats You Won!
+      <h2>Congrats, You Won!</h2>
     </div>
     <div v-else class="form">
       <h2>Guess a letter:</h2>
