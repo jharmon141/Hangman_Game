@@ -6,15 +6,14 @@
 
 <style scoped>
 #loading-spinner {
-  margin-top: 250px;
-  display: block;
+  margin-top: 85px;
+  display: flex;
   justify-content: center;
 }
 
 #top-logo {
-  width: 250px;
+  width: 125px;
   height: auto;
-  display: block;
   -webkit-animation:spin 3s linear infinite;
   -moz-animation:spin 3s linear infinite;
   animation:spin 3s linear infinite;

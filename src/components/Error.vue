@@ -1,22 +1,24 @@
 
 <template>
-  <div class="error">
+  <div id="error">
     <div id="error-logo">
-        <img alt="Hangman Logo" id="top-logo" src="../assets/HangmanLogo.svg">
+        <img alt="Hangman Logo" id="error-logo" src="../assets/HangmanLogo.svg">
     </div>
+    <h3>Something went wrong. Try again later.</h3>
   </div>
 </template>
 
 <style scoped>
 #error {
-  margin-top: 250px;
-  display: block;
-  justify-content: center;
+  margin-top: 85px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 #error-logo {
-  width: 250px;
+  width: 125px;
   height: auto;
-  display: block;
+  margin: auto;
 }
 </style>

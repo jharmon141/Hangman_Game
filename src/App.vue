@@ -1,7 +1,7 @@
 <template>
   <Loading v-if="fetching"/>
-  <Error v-if="errorState" :error-message="errorMessage"/>
-  <Hangman v-else :word="word"/>
+  <Error v-else-if="errorState" :error-message="errorMessage"/>
+  <Hangman v-else :word="word" :restartGame="fetchRandomWord"/>
 </template>
 
 <script setup>
@@ -25,7 +25,6 @@ async function fetchRandomWord() {
 
     fetching.value = false;
     word.value = generatedWord[0];
-    console.log(generatedWord[0]);
   } catch (error) {
 
     fetching.value = false;
@@ -49,6 +48,6 @@ onBeforeMount(() => {
   color: #2c3e50;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 }
 </style>

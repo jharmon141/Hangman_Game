@@ -1,4 +1,4 @@
-# hangman
+# Hangman Game
 
 ## Project setup
 ```
