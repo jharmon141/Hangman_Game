@@ -155,9 +155,17 @@ onMounted(() => {
   .s0 {
     fill: none;
     stroke: #000000;
-    stroke-miterlimit: 100;
     stroke-width: 8;
+    animation: draw 2s forwards;
+    stroke-dasharray: 571;
+    stroke-dashoffset: 571;
   }
+
+  @keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 
   #Face {
     fill: #ffffff;
