@@ -37,7 +37,6 @@ async function fetchRandomWord() {
 onBeforeMount(() => {
   fetchRandomWord();
 });
-
 </script>
 
 <style>
