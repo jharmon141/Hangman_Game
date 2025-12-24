@@ -91,6 +91,10 @@ function submitLetter(letter) {
   }
 
   if (gameLost.value || gameWon.value) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     document.getElementById('btnNewGame').focus();
   }
 
