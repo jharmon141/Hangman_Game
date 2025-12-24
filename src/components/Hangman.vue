@@ -25,12 +25,12 @@
         <span v-else> _ </span>
       </span>
     </div>
-    <div v-if="gameLost" class="lost-game">
-      <h2>You Lost! The word was:</h2>
+    <div v-if="gameLost" class="fade-in">
+      <h2>You <span class="red"> Lost</span>! The word was:</h2>
       <h3>{{ props.word.toUpperCase() }}</h3>
     </div>
-    <div v-else-if="gameWon" class="won-game">
-      <h2>Congrats, You Won!</h2>
+    <div v-else-if="gameWon" class="fade-in">
+      <h2>Congrats, You <span class="green">Won</span>!</h2>
     </div>
     <div v-else class="form">
       <h2>Guess a letter:</h2>
@@ -129,6 +129,7 @@ onMounted(() => {
   .hangman {
     display: flex;
     justify-content: center;
+    margin-top: 50px;
   }
 
   .game {
@@ -153,10 +154,6 @@ onMounted(() => {
     font-size: 18px;
   }
 
-  #hangman_svg {
-    margin-top: 50px;
-  }
-
   .s0 {
     fill: none;
     stroke: #000000;
@@ -166,16 +163,38 @@ onMounted(() => {
     stroke-dashoffset: 571;
   }
 
-  @keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
   #Face {
     fill: #ffffff;
     stroke: #000000;
     stroke-miterlimit: 100;
     stroke-width: 4;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .green {
+    color: green;
+  }
+
+  .fade-in {
+    opacity: 1;
+    animation: fadeInOpacity 0.5s  ease-in;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes fadeInOpacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 </style>
