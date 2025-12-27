@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="hangman">
-    <svg id="hangman_svg" xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 350 633" width="350" height="400">
+    <svg id="hangman_svg" xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 350 633" width="350" :height="[isMobile ? '200' : '400']">
     <path v-if="strikes > 0 || gameWon" id="Head" fill-rule="evenodd" class="s0" d="m177 193c-50.32 0-91-40.68-91-91 0-50.32 40.68-91 91-91 50.32 0 91 40.68 91 91 0 50.32-40.68 91-91 91z"/>
     <line v-if="strikes > 1 || gameWon" xmlns="http://www.w3.org/2000/svg" id="Body" fill-rule="evenodd" class="s0" x1="175" y1="194.53" x2="175" y2="470"/>
     <line v-if="strikes > 2 || gameWon" xmlns="http://www.w3.org/2000/svg" id="Left Leg" fill-rule="evenodd" class="s0" x1="175" y1="470" x2="-100" y2="800"/>
