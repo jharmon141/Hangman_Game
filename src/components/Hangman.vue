@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="hangman">
-    <svg id="hangman_svg" xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 350 633" width="350" :height="[isMobile ? '200' : '400']">
+    <svg id="hangman_svg" xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 350 633" width="350" :height="svgHeight">
     <path v-if="strikes > 0 || gameWon" id="Head" fill-rule="evenodd" class="s0" d="m177 193c-50.32 0-91-40.68-91-91 0-50.32 40.68-91 91-91 50.32 0 91 40.68 91 91 0 50.32-40.68 91-91 91z"/>
     <line v-if="strikes > 1 || gameWon" xmlns="http://www.w3.org/2000/svg" id="Body" fill-rule="evenodd" class="s0" x1="175" y1="194.53" x2="175" y2="470"/>
     <line v-if="strikes > 2 || gameWon" xmlns="http://www.w3.org/2000/svg" id="Left Leg" fill-rule="evenodd" class="s0" x1="175" y1="470" x2="-100" y2="800"/>
@@ -82,12 +82,26 @@ const wordArray = props.word.toLowerCase().split('');
 const lettersInWord = ref([...new Set(wordArray)]);
 const lettersTopRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
 const lettersMiddleRow = ['a','s', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
-const lettersBottomRow = ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+const lettersBottomRow = ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
 
 const strikes = ref(0);
 const guess = ref('');
 const correctlyGuessedLetters = ref([]);
 const incorrectlyGuessedLetters = ref([]);
+const screenHeight = ref();
+
+const svgHeight = computed(() => {
+  const viewHeight = screenHeight.value;
+  if (!props.isMobile) {
+    return 400;
+  }
+
+  if (viewHeight < 900) {
+    return 200;
+  } else {
+    return 300;
+  }
+});
 
 const gameWon = computed(() => {
   const wordSorted = new Array(...lettersInWord.value).sort();
@@ -155,6 +169,7 @@ onMounted(() => {
   if (!props.isMobile) {
     document.getElementById('input').focus();
   }
+  screenHeight.value = window.screen.height;
 });
 </script>
 
@@ -167,6 +182,7 @@ onMounted(() => {
 
   .header button {
     display: inline-flex;
+    font-size: 18px;
   }
 
   .guessed-letters {
