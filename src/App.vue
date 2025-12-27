@@ -1,7 +1,7 @@
 <template>
   <Loading v-if="fetching"/>
   <Error v-else-if="errorState" :error-message="errorMessage"/>
-  <Hangman v-else :word="word" :restartGame="fetchRandomWord"/>
+  <Hangman v-else :word="word" :restartGame="fetchRandomWord" :isMobile="isMobile"/>
 </template>
 
 <script setup>
@@ -13,6 +13,7 @@ import Error from './components/Error.vue';
 const fetching = ref(false);
 const errorState = ref(false);
 const errorMessage = ref();
+const isMobile = ref(false);
 const word = ref();
 
 async function fetchRandomWord() {
@@ -26,7 +27,6 @@ async function fetchRandomWord() {
     fetching.value = false;
     word.value = generatedWord[0];
   } catch (error) {
-
     fetching.value = false;
     errorState.value = true;
     errorMessage.value = error.message;
@@ -34,8 +34,14 @@ async function fetchRandomWord() {
   }
 }
 
+function setDeviceType() {
+  const devicesRegex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Silk|HTC_/i;
+  isMobile.value = devicesRegex.test(navigator.userAgent);
+}
+
 onBeforeMount(() => {
   fetchRandomWord();
+  setDeviceType();
 });
 </script>
 

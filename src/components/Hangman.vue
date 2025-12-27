@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <button id="btnNewGame" @click="props.restartGame">New Game</button>
-    <div class="guessed-letters" v-if="incorrectlyGuessedLetters.length">
+    <div class="guessed-letters" v-if="incorrectlyGuessedLetters.length && !isMobile">
       <span>Guessed Letters: </span>
       <span v-for="letter in incorrectlyGuessedLetters" :key="letter">{{ letter.toUpperCase() }}</span>
     </div>
@@ -33,9 +33,38 @@
       <h2>Congrats, You <span class="green">Won</span>!</h2>
     </div>
     <div v-else class="form">
-      <h2>Guess a letter:</h2>
-      <input v-model="guess" class="input-form" id="input" type="text" maxlength="1" @keyup.enter="submitLetter($event.target.value)" autocomplete="off"/>
-      <button @click="submitLetter(guess)" class="input-form" id="submit-button">Submit</button>
+      <div v-if="isMobile">
+        <h3>Guess a letter:</h3>
+        <div class="guessSubmit">
+          <span id="guessValue">{{ guess.toUpperCase() }}</span>
+          <button @click="submitLetter(guess)" id="submit-button-mobile">Submit</button>
+        </div>
+        <div class="letterRow Top">
+          <span v-for="letter in lettersTopRow" :key="letter">
+            <span v-if="isGuessedLetter(letter)" class="letters guessed">{{ letter.toUpperCase() }}</span>
+            <span v-else-if="isCurrentGuess(letter)" class="letters currentGuess">{{ letter.toUpperCase() }}</span>
+            <span v-else class="letters" @click="setGuess(letter)">{{ letter.toUpperCase() }}</span>
+          </span>
+        </div>
+        <div class="letterRow Middle">
+          <span v-for="letter in lettersMiddleRow" :key="letter">
+            <span v-if="isGuessedLetter(letter)" class="letters guessed">{{ letter.toUpperCase() }}</span>
+            <span v-else-if="isCurrentGuess(letter)" class="letters currentGuess">{{ letter.toUpperCase() }}</span>
+            <span v-else class="letters" @click="setGuess(letter)">{{ letter.toUpperCase() }}</span>
+          </span>
+        </div>
+        <div class="letterRow Bottom">
+          <span v-for="letter in lettersBottomRow" :key="letter">
+            <span v-if="isGuessedLetter(letter)" class="letters guessed">{{ letter.toUpperCase() }}</span>
+            <span v-else-if="isCurrentGuess(letter)" class="letters currentGuess">{{ letter.toUpperCase() }}</span>
+            <span v-else class="letters" @click="setGuess(letter)">{{ letter.toUpperCase() }}</span>
+          </span>
+        </div>
+      </div>
+      <div v-else>
+        <h2>Guess a letter:</h2>
+        <input v-model="guess" class="input-form" id="input" type="text" maxlength="1" @keyup.enter="submitLetter($event.target.value)" autocomplete="off"/>
+      </div>
     </div>
   </div>
 </template>
@@ -46,10 +75,14 @@ import { ref, computed, onMounted } from 'vue';
 const props = defineProps({
   word: String,
   restartGame: Function,
+  isMobile: Boolean,
 });
 
 const wordArray = props.word.toLowerCase().split('');
 const lettersInWord = ref([...new Set(wordArray)]);
+const lettersTopRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
+const lettersMiddleRow = ['a','s', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
+const lettersBottomRow = ['z', 'x', 'c', 'v', 'b', 'n', 'm']
 
 const strikes = ref(0);
 const guess = ref('');
@@ -65,6 +98,18 @@ const gameWon = computed(() => {
 const gameLost = computed(() => {
   return strikes.value > 5;
 });
+
+function isGuessedLetter(letter) {
+  return correctlyGuessedLetters.value.includes(letter) || incorrectlyGuessedLetters.value.includes(letter);
+}
+
+function isCurrentGuess(letter) {
+  return letter.toLowerCase() === guess.value.toLowerCase();
+}
+
+function setGuess(letter) {
+  guess.value = letter;
+}
 
 function submitLetter(letter) {
   const guessedLetter = letter.toLowerCase();
@@ -107,8 +152,10 @@ function submitLetter(letter) {
 }
 
 onMounted(() => {
-  document.getElementById('input').focus();
-})
+  if (!props.isMobile) {
+    document.getElementById('input').focus();
+  }
+});
 </script>
 
 <style scoped>
@@ -129,7 +176,7 @@ onMounted(() => {
   .hangman {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 30px;
   }
 
   .game {
@@ -141,6 +188,35 @@ onMounted(() => {
     font-size: 36px;
   }
 
+  .letterRow {
+    margin: 10px 0 10px 0;
+  }
+
+  .letters {
+    display: inline-block;
+    min-width: 30px;
+    font-size: 30px;
+    border: 1px solid rgb(206, 206, 206);
+    margin: 0 1px;
+  }
+
+  .guessed {
+    background: gray;
+  }
+
+  .currentGuess {
+    background: yellow;
+  }
+
+  #guessValue {
+    display: inline-block;
+    min-width: 35px;
+    min-height: 34px;
+    font-size: 25px;
+    border-bottom: 1px solid black;
+    margin: 0px 15px -10px 15px;
+  }
+
   .input-form {
     font-size: 24px;
   }
@@ -150,8 +226,18 @@ onMounted(() => {
     text-align: center;
   }
 
+  .guessSubmit {
+    min-height: 50px;
+  }
+
   #submit-button {
     font-size: 18px;
+  }
+
+  #submit-button-mobile {
+    display: inline-block;
+    font-size: 18px;
+    margin-bottom: 20px
   }
 
   .s0 {
